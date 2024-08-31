@@ -1,11 +1,13 @@
-// src/components/Contact.js
-import React from 'react';
+import React, { useContext } from 'react';
+import { ThemeContext } from '../ThemeContext';
 import '../stylesheet.css';
 import '../responsive.css';
 
 const Contact = () => {
+  const { theme } = useContext(ThemeContext);
+
   return (
-    <div className="contact" id="contact">
+    <div className={`contact ${theme === 'dark' ? 'dark-theme' : 'light-theme'}`} id="contact">
       <div data-aos="fade-up" data-aos-duration="1000">
         <h1>Contact</h1>
         <p className="contanct-desc px-3">Please feel free to contact me if you need any further information.</p>

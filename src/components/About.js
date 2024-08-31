@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ThemeContext } from '../ThemeContext';
 import aboutImage from '../img/about.png';
 import '../stylesheet.css';
 import '../responsive.css';
 import '../index.css';
 
 const About = () => {
+  const { theme } = useContext(ThemeContext);
+
   return (
-    <div className="about" id="about">
+    <div className={`about ${theme === 'dark' ? 'dark-theme' : 'light-theme'}`} id="about">
       <div className="about-text">
         <h1><span>About</span> Hanif</h1>
         <p>Hello, my name is Hanif Darmawan and you can call me Hanif. I am an informatics engineering student at Brawijaya University. I have taken interest in Front-End Development and also Web Developer.</p>
@@ -17,7 +20,6 @@ const About = () => {
       <div className="about-img">
         <img className="about-image" src={aboutImage} alt="About Hanif" />
       </div>
-
     </div>
   );
 };

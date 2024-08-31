@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
+import { ThemeContext } from '../ThemeContext';
 import '../stylesheet.css';
 import '../responsive.css';
 import jouwasImage from '../img/jouwas.png';
@@ -11,6 +12,8 @@ import psdImage from '../img/psd.png';
 import scopusPublicationImage from '../img/scopusPublication.jpg';
 
 const Project = () => {
+  const { theme } = useContext(ThemeContext);
+
   useEffect(() => {
     let slideIndex = 1;
     let shouldRunTime = true;
@@ -18,19 +21,36 @@ const Project = () => {
     function showSlides(n) {
       let i;
       let slides = document.getElementsByClassName("project-box");
-      if (n > slides.length) {slideIndex = 1}    
-      if (n < 1) {slideIndex = slides.length}
+    
+      if (slides.length === 0) {
+        console.error("No slides found");
+        return;
+      }
+    
+      if (n > slides.length) {
+        slideIndex = 1;
+      } else if (n < 1) {
+        slideIndex = slides.length;
+      }
+    
       for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";  
+        if (slides[i]) {
+          slides[i].style.display = "none";
+        }
       }
+    
       const mediaQuery = window.matchMedia('(max-width: 1024px)');
-      if (mediaQuery.matches) {
-        slides[slideIndex-1].style.display = "block"; 
-      }
-      else {
-        slides[slideIndex-1].style.display = "flex";  
+      if (slides[slideIndex - 1]) {
+        if (mediaQuery.matches) {
+          slides[slideIndex - 1].style.display = "block";
+        } else {
+          slides[slideIndex - 1].style.display = "flex";
+        }
+      } else {
+        console.error("Slide index out of bounds");
       }
     }
+    
 
     function autoPlusSlides() {
       showSlides(slideIndex += 1);
@@ -41,21 +61,20 @@ const Project = () => {
         setTimeout(() => {
           autoPlusSlides();
           time();
-        }, 5000); // Looping time function every 5 seconds
+        }, 5000);
       }
     }
 
     showSlides(slideIndex);
-    time(); // Start the slide show timing function
+    time();
 
     return () => {
-      shouldRunTime = false; // Cleanup the timing loop when the component unmounts
+      shouldRunTime = false;
     };
   }, []);
 
   return (
-    <div className="project" id="project">
-      <h1>Project</h1>
+    <div className={`project ${theme === 'dark' ? 'dark-theme' : 'light-theme'}`} id="project">      <h1>Project</h1>
       <div className="project-list-box">
         <div className="project-box fade">
           <img src={jouwasImage} alt="Jouwas Project" />
